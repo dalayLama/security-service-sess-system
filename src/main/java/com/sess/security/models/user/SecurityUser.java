@@ -11,11 +11,9 @@ public class SecurityUser {
 
     private Long id;
 
-    private UUID securityKey;
-
-    private String nickname;
-
     private String email;
+
+    private UUID securityKey;
 
     private TelegramData telegramData;
 
@@ -33,14 +31,6 @@ public class SecurityUser {
 
     public void setSecurityKey(UUID securityKey) {
         this.securityKey = securityKey;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
     }
 
     public String getEmail() {
