@@ -25,7 +25,7 @@ public class TelegramData {
     private SecurityUser user;
 
     @Column(name = "telegram_id", unique = true, updatable = false)
-    private Integer key;
+    private Integer telegramId;
 
     public Long getId() {
         return id;
@@ -44,11 +44,11 @@ public class TelegramData {
         this.user = user;
     }
 
-    public Integer getKey() {
-        return key;
+    public Integer getTelegramId() {
+        return telegramId;
     }
 
-    public void setKey(Integer key) {
-        this.key = key;
+    public void setTelegramId(Integer telegramId) {
+        this.telegramId = telegramId;
     }
 }
