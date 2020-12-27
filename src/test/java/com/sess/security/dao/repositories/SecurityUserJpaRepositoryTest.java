@@ -51,7 +51,7 @@ class SecurityUserJpaRepositoryTest {
         su.setEmail(String.format("%s@email.ru", UUID.randomUUID().toString()));
 
         TelegramData telegramData = new TelegramData();
-        telegramData.setKey(TELEGRAM_ID++);
+        telegramData.setTelegramId(TELEGRAM_ID++);
         telegramData.setUser(su);
 
         su.setTelegramData(telegramData);
