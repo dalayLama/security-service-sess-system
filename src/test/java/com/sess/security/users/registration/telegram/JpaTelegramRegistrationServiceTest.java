@@ -59,6 +59,8 @@ class JpaTelegramRegistrationServiceTest {
                 () -> service.register(telegramUser)
         );
 
+        verify(userBuilder, never()).generateNewSecurityUser(telegramUser);
+        verify(repository, never()).save(any());
         assertThat(thrown.getErrors()).containsExactlyInAnyOrderElementsOf(expectedMessages);
     }
 
