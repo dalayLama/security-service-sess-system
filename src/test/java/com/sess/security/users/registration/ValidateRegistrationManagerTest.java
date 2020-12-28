@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class SimpleRegistrationManagerTest {
+class ValidateRegistrationManagerTest {
 
     private static final SecurityUser SECURITY_USER = TestUtils.createSecurityUser();
 
@@ -27,7 +27,7 @@ class SimpleRegistrationManagerTest {
         when(validator.validate(any())).thenReturn(Collections.emptySet());
         when(tRegService.register(any(TelegramUser.class))).thenReturn(SECURITY_USER);
 
-        SimpleRegistrationManager registrationManager = new SimpleRegistrationManager(validator, tRegService);
+        ValidateRegistrationManager registrationManager = new ValidateRegistrationManager(validator, tRegService);
         TelegramUser telegramUser = TestUtils.createTelegramUser();
         SecurityUser registered = registrationManager.register(telegramUser);
 
@@ -46,7 +46,7 @@ class SimpleRegistrationManagerTest {
         TelegramRegistrationService tRegService = mock(TelegramRegistrationService.class);
         when(validator.validate(any())).thenReturn(validateMessages);
 
-        SimpleRegistrationManager registrationManager = new SimpleRegistrationManager(validator, tRegService);
+        ValidateRegistrationManager registrationManager = new ValidateRegistrationManager(validator, tRegService);
         TelegramUser telegramUser = TestUtils.createTelegramUser();
 
         ValidateException thrown = assertThrows(
