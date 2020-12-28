@@ -8,6 +8,8 @@ import com.sess.security.users.registration.exceptions.ValidateException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class JpaTelegramRegistrationService implements TelegramRegistrationService {
@@ -16,11 +18,31 @@ public class JpaTelegramRegistrationService implements TelegramRegistrationServi
 
     private final TelegramSecurityUserBuilder securityUserBuilder;
 
+    private String messageViolationUniqueEmail = "Пользователь с таким \"email\" уже существует";
+
+    private String messageViolationUniqueTelegramId = "Пользователь с указанным \"telegram id\" уже существует";
+
     public JpaTelegramRegistrationService(
             SecurityUserJpaRepository userRepository,
             TelegramSecurityUserBuilder securityUserBuilder) {
         this.userRepository = userRepository;
         this.securityUserBuilder = securityUserBuilder;
+    }
+
+    public String getMessageViolationUniqueEmail() {
+        return messageViolationUniqueEmail;
+    }
+
+    public void setMessageViolationUniqueEmail(String messageViolationUniqueEmail) {
+        this.messageViolationUniqueEmail = messageViolationUniqueEmail;
+    }
+
+    public String getMessageViolationUniqueTelegramId() {
+        return messageViolationUniqueTelegramId;
+    }
+
+    public void setMessageViolationUniqueTelegramId(String messageViolationUniqueTelegramId) {
+        this.messageViolationUniqueTelegramId = messageViolationUniqueTelegramId;
     }
 
     @Override
@@ -32,7 +54,24 @@ public class JpaTelegramRegistrationService implements TelegramRegistrationServi
     }
 
     private void validate(TelegramUser telegramUser) throws ValidateException {
-        // todo валидация
+        Set<String> errors = new HashSet<>();
+        if (existEmail(telegramUser.getEmail())) {
+            errors.add(messageViolationUniqueEmail);
+        }
+        if (existTelegramId(telegramUser.getTelegramId())) {
+            errors.add(messageViolationUniqueTelegramId);
+        }
+        if (!errors.isEmpty()) {
+            throw new ValidateException(errors);
+        }
+    }
+
+    private boolean existEmail(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    private boolean existTelegramId(int telegramId) {
+        return userRepository.findByTelegramDataId(telegramId).isPresent();
     }
 
 }
