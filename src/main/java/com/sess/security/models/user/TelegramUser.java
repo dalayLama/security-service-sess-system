@@ -10,14 +10,14 @@ import java.time.LocalDateTime;
  */
 public class TelegramUser extends BaseUser {
 
-    private final String telegramKey;
+    private final int telegramId;
 
-    public TelegramUser(String nickname, String email, City city, Sex sex, LocalDateTime birthday, String telegramKey) {
+    public TelegramUser(String nickname, String email, City city, Sex sex, LocalDateTime birthday, int telegramId) {
         super(nickname, email, city, sex, birthday);
-        this.telegramKey = telegramKey;
+        this.telegramId = telegramId;
     }
 
-    public String getTelegramKey() {
-        return telegramKey;
+    public int getTelegramId() {
+        return telegramId;
     }
 }
