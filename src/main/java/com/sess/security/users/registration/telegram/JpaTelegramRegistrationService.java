@@ -1,6 +1,11 @@
 package com.sess.security.users.registration.telegram;
 
+import com.sess.security.components.message.MessageId;
+import com.sess.security.components.message.MessageService;
 import com.sess.security.dao.repositories.SecurityUserJpaRepository;
+import com.sess.security.exceptions.Error;
+import com.sess.security.exceptions.ErrorBuilder;
+import com.sess.security.exceptions.ErrorMessage;
 import com.sess.security.models.user.SecurityUser;
 import com.sess.security.models.user.TelegramUser;
 import com.sess.security.users.registration.exceptions.RegistrationException;
@@ -18,31 +23,15 @@ public class JpaTelegramRegistrationService implements TelegramRegistrationServi
 
     private final TelegramSecurityUserBuilder securityUserBuilder;
 
-    private String messageViolationUniqueEmail = "Пользователь с таким \"email\" уже существует";
-
-    private String messageViolationUniqueTelegramId = "Пользователь с указанным \"telegram id\" уже существует";
+    private final MessageService messageService;
 
     public JpaTelegramRegistrationService(
             SecurityUserJpaRepository userRepository,
-            TelegramSecurityUserBuilder securityUserBuilder) {
+            TelegramSecurityUserBuilder securityUserBuilder,
+            MessageService messageService) {
         this.userRepository = userRepository;
         this.securityUserBuilder = securityUserBuilder;
-    }
-
-    public String getMessageViolationUniqueEmail() {
-        return messageViolationUniqueEmail;
-    }
-
-    public void setMessageViolationUniqueEmail(String messageViolationUniqueEmail) {
-        this.messageViolationUniqueEmail = messageViolationUniqueEmail;
-    }
-
-    public String getMessageViolationUniqueTelegramId() {
-        return messageViolationUniqueTelegramId;
-    }
-
-    public void setMessageViolationUniqueTelegramId(String messageViolationUniqueTelegramId) {
-        this.messageViolationUniqueTelegramId = messageViolationUniqueTelegramId;
+        this.messageService = messageService;
     }
 
     @Override
@@ -54,15 +43,16 @@ public class JpaTelegramRegistrationService implements TelegramRegistrationServi
     }
 
     private void validate(TelegramUser telegramUser) throws ValidateException {
-        Set<String> errors = new HashSet<>();
+        Set<ErrorMessage> errors = new HashSet<>();
         if (existEmail(telegramUser.getEmail())) {
-            errors.add(messageViolationUniqueEmail);
+            errors.add(messageService.sayError(MessageId.UNIQUE_EMAIL_VIOLATION));
         }
         if (existTelegramId(telegramUser.getTelegramId())) {
-            errors.add(messageViolationUniqueTelegramId);
+            errors.add(messageService.sayError(MessageId.UNIQUE_TELEGRAM_ID_VIOLATION));
         }
         if (!errors.isEmpty()) {
-            throw new ValidateException(errors);
+            Error error = ErrorBuilder.listMessages(false, errors);
+            throw new ValidateException(error);
         }
     }
 

@@ -1,25 +1,40 @@
 package com.sess.security.users.registration.exceptions;
 
-import com.sess.security.exceptions.SecurityAppException;
+import com.sess.security.exceptions.Error;
+import com.sess.security.core.services.exceptions.CoreServiceException;
+import com.sess.security.exceptions.OperationAppException;
 
-public class RegistrationException extends SecurityAppException {
+import java.util.Objects;
 
-    public RegistrationException() {
+public class RegistrationException extends OperationAppException {
+
+    private final CoreServiceException coreException;
+
+    public RegistrationException(Error error) {
+        super(error);
+        this.coreException = null;
     }
 
-    public RegistrationException(String message) {
-        super(message);
+    public RegistrationException(String message, Error error) {
+        super(message, error);
+        this.coreException = null;
     }
 
-    public RegistrationException(String message, Throwable cause) {
-        super(message, cause);
+    public RegistrationException(String message, CoreServiceException cause, Error error) {
+        super(message, cause, error);
+        this.coreException = cause;
     }
 
-    public RegistrationException(Throwable cause) {
-        super(cause);
+    public RegistrationException(CoreServiceException cause, Error error) {
+        super(cause, error);
+        this.coreException = cause;
     }
 
-    public RegistrationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public boolean hasCoreException() {
+        return Objects.nonNull(coreException);
+    }
+
+    public CoreServiceException getCoreException() {
+        return coreException;
     }
 }

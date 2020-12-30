@@ -3,8 +3,7 @@ package com.sess.security;
 import com.sess.security.models.City;
 import com.sess.security.models.Sex;
 import com.sess.security.models.TelegramData;
-import com.sess.security.models.user.SecurityUser;
-import com.sess.security.models.user.TelegramUser;
+import com.sess.security.models.user.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -16,6 +15,8 @@ public class TestUtils {
     private static long TELEGRAM_ID = 1;
 
     private static int TELEGRAM_KEY_ID = 1;
+
+    private static long CORE_USER_ID = 1;
 
     public static TelegramUser createTelegramUser() {
         return new TelegramUser(
@@ -90,6 +91,20 @@ public class TestUtils {
         return createTelegramData(newTelegramKeyId());
     }
 
+    public static RegisteredCoreUser createRegisteredCoreUser() {
+        long newId = newTelegramId();
+        return new RegisteredCoreUser(
+                newId,
+                String.format("nick%d", newId),
+                String.format("email%d@mail.ru", newId),
+                new City(1L, "address"),
+                Sex.MALE,
+                LocalDateTime.now(),
+                UUID.randomUUID()
+        );
+    }
+
+
     private static long newUserId() {
         return USER_ID++;
     }
@@ -100,6 +115,10 @@ public class TestUtils {
 
     private static int newTelegramKeyId() {
         return TELEGRAM_KEY_ID++;
+    }
+
+    private static long newCoreUserId() {
+        return CORE_USER_ID++;
     }
 
 }

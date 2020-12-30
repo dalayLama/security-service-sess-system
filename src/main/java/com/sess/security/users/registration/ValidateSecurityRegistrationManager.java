@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class ValidateRegistrationManager implements RegistrationManager {
+public class ValidateSecurityRegistrationManager implements SecurityRegistrationManager {
 
     private final Validator validator;
 
     private final TelegramRegistrationService telegramRegistrationService;
 
-    public ValidateRegistrationManager(Validator validator, TelegramRegistrationService telegramRegistrationService) {
+    public ValidateSecurityRegistrationManager(Validator validator, TelegramRegistrationService telegramRegistrationService) {
         this.validator = validator;
         this.telegramRegistrationService = telegramRegistrationService;
     }

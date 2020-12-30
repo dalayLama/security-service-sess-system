@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class BaseUser {
 
     @NotBlank(message = "Поле \"Ник\" обязательно для заполнения")
+    @Size(max = 128, message = "Поле \"Ник\" не может превышать 128 символов")
     private final String nickname;
 
     @NotBlank(message = "Поле \"email\" обязательно для заполнения")

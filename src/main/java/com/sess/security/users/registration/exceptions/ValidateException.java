@@ -1,18 +1,19 @@
 package com.sess.security.users.registration.exceptions;
 
-import java.util.ArrayList;
+import com.sess.security.exceptions.Error;
+import com.sess.security.exceptions.ErrorBuilder;
+import com.sess.security.utils.ErrorsCodes;
+
 import java.util.Collection;
-import java.util.List;
 
 public class ValidateException extends RegistrationException {
 
-    private final List<String> errors;
-
     public ValidateException(Collection<String> errors) {
-        this.errors = new ArrayList<>(errors);
+        super(ErrorBuilder.listMessages(false, ErrorsCodes.VALIDATE_ERROR, errors));
     }
 
-    public Collection<String> getErrors() {
-        return errors;
+    public ValidateException(Error error) {
+        super(error);
     }
+
 }
